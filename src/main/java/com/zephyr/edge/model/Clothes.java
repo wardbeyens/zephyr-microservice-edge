@@ -1,6 +1,5 @@
 package com.zephyr.edge.model;
 
-
 public class Clothes {
     private String uuid;
     private String name;
@@ -14,17 +13,27 @@ public class Clothes {
     public Clothes() {
     }
 
-//    public Clothes(String name, String color, String size, String gender, String brand, double price, String type) {
-//        this.uuid = UUID.randomUUID().toString();
-//        this.name = name;
-//        this.color = color;
-//        this.size = size;
-//        this.gender = gender;
-//        this.brand = brand;
-//        this.price = price;
-//        this.type = type;
-//    }
+    public Clothes(String name, String color, String size, String gender, String brand, double price, String type) {
+        this.name = name;
+        this.color = color;
+        this.size = size;
+        this.gender = gender;
+        this.brand = brand;
+        this.price = price;
+        this.type = type;
+    }
 
+    //enkel voor testing
+    public Clothes(String uuid, String name, String color, String size, String gender, String brand, double price, String type) {
+        this.uuid = uuid;
+        this.name = name;
+        this.color = color;
+        this.size = size;
+        this.gender = gender;
+        this.brand = brand;
+        this.price = price;
+        this.type = type;
+    }
 
     public String getUuid() {
         return uuid;

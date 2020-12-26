@@ -1,9 +1,7 @@
 package com.zephyr.edge.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
-import com.zephyr.edge.model.Clothes;
-import com.zephyr.edge.model.Order;
-import com.zephyr.edge.model.User;
+import com.zephyr.edge.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class ZephyrEdgeController {
@@ -30,6 +30,51 @@ public class ZephyrEdgeController {
 
     @Value("${protocol}://${orderservice.host}:${orderservice.port}")
     private String orderServiceBaseUrl;
+
+    @PostConstruct
+    public void createUsableOrders() {
+        List<User> userList = getUsers();
+        User initUser1 = userList.get(0);
+        User initUser2 = userList.get(1);
+
+//        System.out.println("First User: " + initUser1.getUserName());
+//        System.out.println("Second User: " + initUser2.getUserName());
+
+        List<Clothes> clothesList = getClothes();
+        Clothes initClothes1 = clothesList.get(0);
+        Clothes initClothes2 = clothesList.get(1);
+
+//        System.out.println("First Clothes: " + initClothes1.getName());
+//        System.out.println("Second Clothes: " + initClothes2.getName());
+
+        Purchase initPurchase1 = new Purchase(initClothes1.getUuid());
+        Purchase initPurchase2 = new Purchase(initClothes2.getUuid(), 2);
+        Purchase initPurchase3 = new Purchase(initClothes1.getUuid(), 3);
+
+        ArrayList<Purchase> initPurchaseList1 = new ArrayList<>();
+        initPurchaseList1.add(initPurchase2);
+        initPurchaseList1.add(initPurchase3);
+
+        restTemplate.delete(orderServiceBaseUrl + "/orders/delete/all");
+
+        ResponseEntity<List<Order>> responseEntityListOrder =
+                restTemplate.exchange(orderServiceBaseUrl + "/orders",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
+                        });
+
+//        System.out.println("Deleted all Orders");
+
+        Order initCreatedOrder1 = restTemplate.postForObject(orderServiceBaseUrl + "/order",
+                new Order(initUser1.getUuid(), initPurchase1), Order.class);
+
+        Order initCreatedOrder2 = restTemplate.postForObject(orderServiceBaseUrl + "/order",
+                new Order(initUser2.getUuid(), initPurchaseList1), Order.class);
+
+        Order initCreatedOrder3 = restTemplate.postForObject(orderServiceBaseUrl + "/order",
+                new Order(initUser1.getUuid()), Order.class);
+
+//        System.out.println("Created Orders with real Users and Clothes");
+    }
 
     @GetMapping("/users")
     public List<User> getUsers() {
@@ -138,60 +183,82 @@ public class ZephyrEdgeController {
     }
 
     @GetMapping("/orders")
-    public List<Order> getOrders() {
-
+    public List<FilledOrder> getOrders() {
         ResponseEntity<List<Order>> responseEntity =
                 restTemplate.exchange(orderServiceBaseUrl + "/orders",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
                         });
-
-        return responseEntity.getBody();
+        List<FilledOrder> filledOrderList = new ArrayList<>();
+        if (responseEntity.getBody() != null) {
+            filledOrderList = getFilledOrderListInternalByOrderList(responseEntity.getBody());
+        }
+        return filledOrderList;
     }
 
-
     @GetMapping("/orders/search")
-    public List<Order> getOrdersByUUIDorBUserUUID(@RequestParam(required = false) String uuid, @RequestParam(required = false) String userID) {
-
+    public List<FilledOrder> getOrdersByUUIDorBUserUUID(@RequestParam(required = false) String uuid, @RequestParam(required = false) String userID) {
+        List<Order> listOrders = new ArrayList<>();
         if (userID != null) {
             ResponseEntity<List<Order>> responseEntity = restTemplate.exchange(orderServiceBaseUrl + "/orders/user/" + userID, HttpMethod.GET
                     , null, new ParameterizedTypeReference<List<Order>>() {
                     }, userID);
 
-            return responseEntity.getBody();
+            listOrders = responseEntity.getBody();
         } else {
-            List<Order> listOrders = new ArrayList<>();
             Order getOrder = restTemplate.getForObject(orderServiceBaseUrl + "/order/" + uuid,
                     Order.class, uuid);
 
             listOrders.add(getOrder);
-            return listOrders;
         }
 
-
+        List<FilledOrder> filledOrderList = new ArrayList<>();
+        if (listOrders != null) {
+            filledOrderList = getFilledOrderListInternalByOrderList(listOrders);
+        }
+        return filledOrderList;
     }
 
     @PostMapping("/order")
-    public Order addOrder(@RequestBody Order order) {
+    public FilledOrder addOrder(@RequestBody Order order) {
 
-        return restTemplate.postForObject(orderServiceBaseUrl + "/order",
+
+        Order notFilledOrder = restTemplate.postForObject(orderServiceBaseUrl + "/order",
                 order, Order.class);
+
+        FilledOrder filledOrder = new FilledOrder();
+        if (notFilledOrder != null) {
+            filledOrder = getFilledOrderInternalByOrder(notFilledOrder);
+        }
+        return filledOrder;
     }
 
     @PutMapping("/order/{uuid}")
-    public Order updateUser(@PathVariable String uuid, @RequestBody Order updatedOrder) {
+    public FilledOrder updateUser(@PathVariable String uuid, @RequestBody Order updatedOrder) {
 
         ResponseEntity<Order> responseEntity =
                 restTemplate.exchange(orderServiceBaseUrl + "/order/" + uuid,
                         HttpMethod.PUT, new HttpEntity<>(updatedOrder), Order.class);
 
-        return responseEntity.getBody();
+        Order notFilledOrder = responseEntity.getBody();
+
+        FilledOrder filledOrder = new FilledOrder();
+        if (notFilledOrder != null) {
+            filledOrder = getFilledOrderInternalByOrder(notFilledOrder);
+        }
+        return filledOrder;
     }
 
     @PostMapping("/order/{uuid}/paid")
-    public Order updateOrderPaid(@PathVariable String uuid) {
+    public FilledOrder updateOrderPaid(@PathVariable String uuid) {
 
-        return restTemplate.postForObject(orderServiceBaseUrl + "/order/" + uuid + "/paid",
+        Order notFilledOrder = restTemplate.postForObject(orderServiceBaseUrl + "/order/" + uuid + "/paid",
                 null, Order.class);
+
+        FilledOrder filledOrder = new FilledOrder();
+        if (notFilledOrder != null) {
+            filledOrder = getFilledOrderInternalByOrder(notFilledOrder);
+        }
+        return filledOrder;
     }
 
     @DeleteMapping("/order/{uuid}")
@@ -203,6 +270,50 @@ public class ZephyrEdgeController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    public User getUserInternalByUserUUId(String uuid) {
+        User user = restTemplate.getForObject(userServiceBaseUrl + "/users/uuid/{uuid}",
+                User.class, uuid);
+        if (user != null) {
+            user.setPassword(null);
+        }
+        return user;
+    }
+
+    public Clothes getClothesInternalByClothesUUId(String uuid) {
+        return restTemplate.getForObject(clothesServiceBaseUrl + "/clothes/uuid/" + uuid,
+                Clothes.class, uuid);
+    }
+
+    public ArrayList<FilledPurchase> getFilledPurchaseListInternalByPurchaseList(List<Purchase> purchaseList) {
+        ArrayList<FilledPurchase> filledPurchaseList = new ArrayList<>();
+        for (Purchase p : purchaseList
+        ) {
+            String uuid = p.getClothes();
+            Clothes clothes = getClothesInternalByClothesUUId(uuid);
+            FilledPurchase filledPurchase = new FilledPurchase(clothes, p.getAmount());
+            filledPurchaseList.add(filledPurchase);
+        }
+        return filledPurchaseList;
+    }
+
+    public FilledOrder getFilledOrderInternalByOrder(Order order) {
+        User user = getUserInternalByUserUUId(order.getUserID());
+        ArrayList<FilledPurchase> purchaseList = getFilledPurchaseListInternalByPurchaseList(order.getPurchaseList());
+        return new FilledOrder(order.getUuid(), user, purchaseList, order.isPaid());
+    }
+
+    public List<FilledOrder> getFilledOrderListInternalByOrderList(List<Order> orderList) {
+
+        List<FilledOrder> filledOrderList = new ArrayList<>();
+
+        for (Order o : orderList
+        ) {
+            FilledOrder filledOrder = getFilledOrderInternalByOrder(o);
+            filledOrderList.add(filledOrder);
+        }
+        return filledOrderList;
     }
 
 
