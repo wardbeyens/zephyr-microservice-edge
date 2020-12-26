@@ -7,15 +7,15 @@ public class Purchase {
     public Purchase() {
     }
 
-//    public Purchase(String clothes) {
-//        this.clothes = clothes;
-//        this.amount = 1;
-//    }
-//
-//    public Purchase(String clothes, Integer amount) {
-//        this.clothes = clothes;
-//        this.amount = amount;
-//    }
+    public Purchase(String clothes) {
+        this.clothes = clothes;
+        this.amount = 1;
+    }
+
+    public Purchase(String clothes, Integer amount) {
+        this.clothes = clothes;
+        this.amount = amount;
+    }
 
     public String getClothes() {
         return clothes;

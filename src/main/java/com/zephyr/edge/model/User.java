@@ -2,6 +2,7 @@ package com.zephyr.edge.model;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.UUID;
 
 public class User {
 
@@ -18,7 +19,7 @@ public class User {
     private String phoneNumber;
 
     @Enumerated(EnumType.ORDINAL)
-    private final Role role = Role.normalUser;
+    private Role role = Role.normalUser;
 
     public enum Role {
         admin, normalUser;
@@ -27,24 +28,24 @@ public class User {
     public User() {
     }
 
-//    public User(String userName, String firstName, String lastName, String email, String password, String streetName, String number, String postalCode, String city, String phoneNumber, Role role) {
-//        this.uuid = UUID.randomUUID().toString();
-//        setUserName(userName);
-//        setFirstName(firstName);
-//        setLastName(lastName);
-//        setEmail(email);
-//        setPassword(password);
-//        setStreetName(streetName);
-//        setNumber(number);
-//        setPostalCode(postalCode);
-//        setCity(city);
-//        setPhoneNumber(phoneNumber);
-//        if (role == null) {
-//            this.role = Role.normalUser;
-//        } else {
-//            this.role = role;
-//        }
-//    }
+    public User(String userName, String firstName, String lastName, String email, String password, String streetName, String number, String postalCode, String city, String phoneNumber, Role role) {
+        this.uuid = UUID.randomUUID().toString();
+        setUserName(userName);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setPassword(password);
+        setStreetName(streetName);
+        setNumber(number);
+        setPostalCode(postalCode);
+        setCity(city);
+        setPhoneNumber(phoneNumber);
+        if (role == null) {
+            this.role = Role.normalUser;
+        } else {
+            this.role = role;
+        }
+    }
 
     public String getUuid() {
         return uuid;

@@ -12,7 +12,7 @@
     <artifactId>edge</artifactId>
     <version>0.0.1</version>
     <name>edge</name>
-    <description>edge service for zephy</description>
+    <description>edge service for zephyr</description>
 
     <properties>
         <java.version>8</java.version>

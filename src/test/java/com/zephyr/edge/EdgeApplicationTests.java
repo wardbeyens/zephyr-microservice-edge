@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class EdgeApplicationTests {
 
     @Test
-    void contextLoads() {
+    void main() {
+        EdgeApplication.main(new String[] {});
     }
 
 }

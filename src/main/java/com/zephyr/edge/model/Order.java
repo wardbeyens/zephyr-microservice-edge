@@ -1,6 +1,7 @@
 package com.zephyr.edge.model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Order {
     private String uuid;
@@ -11,30 +12,30 @@ public class Order {
     public Order() {
     }
 
-//    public Order(String userID) {
-//        this.uuid = UUID.randomUUID().toString();
-//        this.userID = userID;
-//        this.paid = false;
-//        this.purchaseList = new ArrayList<>();
-//
-//    }
-//
-//    public Order(String userID, Purchase purchase) {
-//        this.uuid = UUID.randomUUID().toString();
-//        this.userID = userID;
-//        this.paid = false;
-//
-//        ArrayList<Purchase> constructPurchaseList = new ArrayList<>();
-//        constructPurchaseList.add(purchase);
-//        this.purchaseList = constructPurchaseList;
-//    }
-//
-//    public Order(String userID, ArrayList<Purchase> purchaseList) {
-//        this.uuid = UUID.randomUUID().toString();
-//        this.userID = userID;
-//        this.paid = false;
-//        this.purchaseList = purchaseList;
-//    }
+    public Order(String userID) {
+        this.uuid = UUID.randomUUID().toString();
+        this.userID = userID;
+        this.paid = false;
+        this.purchaseList = new ArrayList<>();
+
+    }
+
+    public Order(String userID, Purchase purchase) {
+        this.uuid = UUID.randomUUID().toString();
+        this.userID = userID;
+        this.paid = false;
+
+        ArrayList<Purchase> constructPurchaseList = new ArrayList<>();
+        constructPurchaseList.add(purchase);
+        this.purchaseList = constructPurchaseList;
+    }
+
+    public Order(String userID, ArrayList<Purchase> purchaseList) {
+        this.uuid = UUID.randomUUID().toString();
+        this.userID = userID;
+        this.paid = false;
+        this.purchaseList = purchaseList;
+    }
 
 
     public String getUuid() {
