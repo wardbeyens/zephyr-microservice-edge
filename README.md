@@ -1,3 +1,11 @@
+
+# zephyr-microservice-edge
+
+## About The Project
+Welcome to the Readme of the project of Ward Beyens, Thibaut Bollen and Cindy Knapen. For the Advanced Programming Topics Class, we have made a project around a clothing webshop. This project covers 4 micro services, the edge microservice, user microservice, clothes microservice and order microservice. The user microservice uses Postgres as database while the clothes and order services make use of a MongoDB database.
+
+## Our micro services
+
 zephyr-microservice-edge: ![zephyr-microservice-edge](https://github.com/wardbeyens/zephyr-microservice-edge/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
 
 zephyr-microservice-user:![Test, Build and Upload artifact](https://github.com/cindy5656/Zephyr-userservice/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=master)
@@ -6,10 +14,6 @@ zephyr-microservice-clothes: ![Test, Build and Upload artifact](https://github.c
 
 zephyr-microservice-order: ![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-order/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
 
-# zephyr-microservice-edge
-
-## About The Project
-Welcome to the Readme of the project of Ward Beyens, Thibaut Bollen and Cindy Knapen. For the Advanced Programming Topics Class, we have made a project around a clothing webshop. This project covers 4 micro services, the edge microservice, user microservice, clothes microservice and order microservice. The user microservice uses Postgres as database while the clothes and order services make use of a MongoDB database.
 
 ### Built With
 
@@ -52,9 +56,15 @@ This is an example of how to list things you need to use the software and how to
    mvn install
    ```
 ## Diagram
-Here you can  see the diagram that describes how our services communicate with each other. 
+Here you can see the diagram that describes how our services communicate with each other. 
 
 ![Diagram](https://i.imgur.com/LvCd8C1.png)
+
+## Swagger UI
+Our swagger UI describes the Get, Post, Put and Delete requests that can be used on the edge service. 
+
+![Swagger UI](https://i.imgur.com/rixDKdr.png)
+
 
 ## Usage
 
