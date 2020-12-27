@@ -32,6 +32,8 @@ This is an example of how to list things you need to use the software and how to
     docker run -d --name order-service -p 8052:8052 -e MONGODB_HOST=host.docker.internal -e MONGODB_PORT=17017 wardbeyens/orderservice:latest
 
     docker run -d --name clothes-service -p 8053:8053 -e MONGODB_HOST=host.docker.internal 990604/clothesservice:latest
+
+    (docker run -d --name edge-service -p 8050:8050 -e USER_SERVICE_HOST=host.docker.internal -e CLOTHES_SERVICE_HOST=host.docker.internal -e ORDER_SERVICE_HOST=host.docker.internal wardbeyens/zephyr-edge-service:latest)
   ```
 
 ### Installation
