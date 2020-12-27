@@ -1,4 +1,10 @@
-![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-edge/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+zephyr-microservice-edge: ![zephyr-microservice-edge](https://github.com/wardbeyens/zephyr-microservice-edge/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+
+zephyr-microservice-user:![Test, Build and Upload artifact](https://github.com/cindy5656/Zephyr-userservice/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=master)
+
+zephyr-microservice-clothes: ![Test, Build and Upload artifact](https://github.com/thibautbollen/zephyr-clothes/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+
+zephyr-microservice-order: ![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-order/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
 
 # zephyr-microservice-edge
 
