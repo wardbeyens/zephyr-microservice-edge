@@ -383,7 +383,7 @@ public class EdgeContollerUnitTests {
     public void givenReview_whenPutReview_thenReturnJsonReview() throws Exception {
 
         mockServer.expect(ExpectedCount.once(),
-                requestTo(new URI(clothesServiceBaseUrl + "/clothes/" + clothes3.getUuid())))
+                requestTo(new URI(clothesServiceBaseUrl + "/clothes/uuid/" + clothes3.getUuid())))
                 .andExpect(method(HttpMethod.PUT))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -410,7 +410,7 @@ public class EdgeContollerUnitTests {
     public void givenClothes_whenDeleteClothes_thenStatusOK() throws Exception {
 
         mockServer.expect(ExpectedCount.once(),
-                requestTo(new URI(clothesServiceBaseUrl + "/clothes/" + clothes1.getUuid())))
+                requestTo(new URI(clothesServiceBaseUrl + "/clothes/uuid/" + clothes1.getUuid())))
                 .andExpect(method(HttpMethod.DELETE))
                 .andRespond(withStatus(HttpStatus.OK)
                 );
@@ -424,7 +424,7 @@ public class EdgeContollerUnitTests {
     public void givenNoClothes_whenDeleteClothes_thenStatusNotFound() throws Exception {
 
         mockServer.expect(ExpectedCount.once(),
-                requestTo(new URI(clothesServiceBaseUrl + "/clothes/" + "niet-vindbaar")))
+                requestTo(new URI(clothesServiceBaseUrl + "/clothes/uuid/" + "niet-vindbaar")))
                 .andExpect(method(HttpMethod.DELETE))
                 .andRespond(withStatus(HttpStatus.BAD_REQUEST)
                 );

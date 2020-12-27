@@ -167,7 +167,7 @@ public class ZephyrEdgeController {
     public Clothes updateUser(@PathVariable String uuid, @RequestBody Clothes clothes) {
 
         ResponseEntity<Clothes> responseEntity =
-                restTemplate.exchange(clothesServiceBaseUrl + "/clothes/" + uuid,
+                restTemplate.exchange(clothesServiceBaseUrl + "/clothes/uuid/" + uuid,
                         HttpMethod.PUT, new HttpEntity<>(clothes), Clothes.class);
 
         return responseEntity.getBody();
@@ -177,7 +177,7 @@ public class ZephyrEdgeController {
     public ResponseEntity<String> deleteClothesByUUID(@PathVariable String uuid) {
 
         try {
-            restTemplate.delete(clothesServiceBaseUrl + "/clothes/" + uuid);
+            restTemplate.delete(clothesServiceBaseUrl + "/clothes/uuid/" + uuid);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
