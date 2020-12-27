@@ -31,16 +31,22 @@ public class ZephyrEdgeController {
     @Value("${protocol}://${orderservice.host}:${orderservice.port}")
     private String orderServiceBaseUrl;
 
-    @PostConstruct
-    public void createUsableOrders() {
-        List<User> userList = getUsers();
+    @DeleteMapping("/deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes")
+    public ResponseEntity<String> deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes() {
+        List<User> userList = restTemplate.exchange(userServiceBaseUrl + "/users",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {
+                }).getBody();
+        assert userList != null;
         User initUser1 = userList.get(0);
         User initUser2 = userList.get(1);
 
 //        System.out.println("First User: " + initUser1.getUserName());
 //        System.out.println("Second User: " + initUser2.getUserName());
 
-        List<Clothes> clothesList = getClothes();
+        List<Clothes> clothesList = restTemplate.exchange(clothesServiceBaseUrl + "/clothes",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Clothes>>() {
+                }).getBody();
+        assert clothesList != null;
         Clothes initClothes1 = clothesList.get(0);
         Clothes initClothes2 = clothesList.get(1);
 
@@ -57,11 +63,6 @@ public class ZephyrEdgeController {
 
         restTemplate.delete(orderServiceBaseUrl + "/orders/delete/all");
 
-        ResponseEntity<List<Order>> responseEntityListOrder =
-                restTemplate.exchange(orderServiceBaseUrl + "/orders",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
-                        });
-
 //        System.out.println("Deleted all Orders");
 
         Order initCreatedOrder1 = restTemplate.postForObject(orderServiceBaseUrl + "/order",
@@ -72,8 +73,8 @@ public class ZephyrEdgeController {
 
         Order initCreatedOrder3 = restTemplate.postForObject(orderServiceBaseUrl + "/order",
                 new Order(initUser1.getUuid()), Order.class);
-
 //        System.out.println("Created Orders with real Users and Clothes");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users")

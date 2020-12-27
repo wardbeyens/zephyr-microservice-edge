@@ -767,4 +767,61 @@ public class EdgeContollerUnitTests {
 
     }
 
+
+    @Test
+    public void deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes_thenStatusOK() throws Exception {
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(userServiceBaseUrl + "/users")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(allUsers))
+                );
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(clothesServiceBaseUrl + "/clothes")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(allClothes))
+                );
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(orderServiceBaseUrl + "/orders/delete/all")))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK)
+                );
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(orderServiceBaseUrl + "/order")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(order1))
+                );
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(orderServiceBaseUrl + "/order")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(order2))
+                );
+
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI(orderServiceBaseUrl + "/order")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(order3))
+                );
+
+        mockMvc.perform(delete("/deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
+
 }
