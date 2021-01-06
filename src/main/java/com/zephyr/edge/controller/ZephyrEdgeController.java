@@ -1,6 +1,5 @@
 package com.zephyr.edge.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import com.zephyr.edge.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 //http://localhost:8050/swagger-ui.html
+@CrossOrigin
 @RestController
 public class ZephyrEdgeController {
 
