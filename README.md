@@ -10,7 +10,8 @@
   * [Diagram](#diagram)
   * [PostMan](#postman)
   * [Swagger UI](#swagger-ui)
-  * [Usage](#usage)
+  * [Deployment op K8s](#deployment-op-k8s)
+  * [Basic front-end](#basic-front-end)
   * [Contact](#contact)
 
 ## About The Project
@@ -89,10 +90,25 @@ Our swagger UI describes the Get, Post, Put and Delete requests that can be used
 
 ![Swagger UI](https://i.imgur.com/5Yw7CCC.png)
 
+## Deployment op K8s
 
-## Usage
+(Gebruik van K8s secrets voor environment variables bij deployment )
 
-TBA: (front-end link)
+```
+kubectl create secret generic dev-db-secret --from-literal=POSTGRES_DB=userTest --from-literal=POSTGRES_PASSWORD=postgres --from-literal=POSTGRES_USER=postgres
+
+kubectl apply -f https://raw.githubusercontent.com/wardbeyens/zephyr-microservice-edge/main/k8.yaml
+```
+
+![Imgur](https://i.imgur.com/qKUIyqR.png)
+
+
+## Basic front-end 
+
+(Basic front-end dat communiceert met de edge-service )
+
+[front-end repository](https://github.com/wardbeyens/zephyr-frontend)
+
 
 ## Contact
 
