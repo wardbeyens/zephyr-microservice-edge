@@ -6,13 +6,19 @@ Welcome to the Readme of the project of Ward Beyens, Thibaut Bollen and Cindy Kn
 
 ## Our micro services
 
-zephyr-microservice-edge: ![zephyr-microservice-edge](https://github.com/wardbeyens/zephyr-microservice-edge/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
 
-zephyr-microservice-user:![Test, Build and Upload artifact](https://github.com/cindy5656/Zephyr-userservice/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=master)
-
-zephyr-microservice-clothes: ![Test, Build and Upload artifact](https://github.com/thibautbollen/zephyr-clothes/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
-
-zephyr-microservice-order: ![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-order/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+- 
+  [zephyr-microservice-user](https://github.com/cindy5656/zephyr-microservice-user): ![Test, Build and Upload artifact](https://github.com/cindy5656/zephyr-microservice-user/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=master)
+  
+- 
+  [zephyr-microservice-clothes](https://github.com/thibautbollen/zephyr-microservice-clothes): ![Test, Build and Upload artifact](https://github.com/thibautbollen/zephyr-microservice-clothes/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+  
+- 
+  [zephyr-microservice-order](https://github.com/wardbeyens/zephyr-microservice-order): ![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-order/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+  
+- 
+  [zephyr-microservice-edge](https://github.com/wardbeyens/zephyr-microservice-edge): ![Test, Build and Upload artifact](https://github.com/wardbeyens/zephyr-microservice-edge/workflows/Test,%20Build%20and%20Upload%20artifact/badge.svg?branch=main)
+  
 
 
 ### Built With
