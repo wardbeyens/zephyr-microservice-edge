@@ -1,0 +1,334 @@
+apiVersion: v1                    # API version
+kind: Service                     # Type of kubernetes resource 
+metadata:
+  name: user-service-postgres   # Name of the service
+  labels:                         # Labels that will be applied to the service
+    app: user-service
+spec:
+  ports:
+    - port: 5432
+  selector:                       # Selects any Pod with labels `app=user-service,tier=postgres`
+    app: user-service
+    tier: postgres
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: user-service-postgres-deployment           # Name of the deployment
+  labels:                           # Labels applied to this deployment 
+    app: user-service
+spec:
+  selector:
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: user-service
+      tier: postgres
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: user-service
+        tier: postgres
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+        - image: postgres:latest                # The container image
+          name: postgres
+          env:                        # Environment variables passed to the container
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dev-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: dev-db-secret
+                  key: POSTGRES_DB
+          ports:
+            - containerPort: 5432       # The port that the container exposes
+              name: postgres
+---
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: user-service-server-deployment    # Name of the deployment
+  labels:                     # Labels that will be applied to this deployment
+    app: user-service-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: user-service-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: user-service-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+        - name: user-service-server
+          image: cindy5656/userservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8051 # The port that the container exposes
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:                    # Environment variables supplied to the Pod
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: dev-db-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dev-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRESQL_DB_HOST
+              value: "user-service-postgres"
+---
+apiVersion: v1                      # API version
+kind: Service                       # Type of the kubernetes resource
+metadata:
+  name: user-service-server    # Name of the service
+  labels:                           # Labels that will be applied to this service
+    app: user-service-server
+spec:
+  type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
+  selector:
+    app: user-service-server   # The service exposes Pods with label `app=user-service-server`
+  ports:                            # Forward incoming connections on port 8080 to the target port 8051
+    - name: http
+      port: 8051
+      targetPort: 8051
+---
+apiVersion: v1                    # API version
+kind: Service                     # Type of kubernetes resource 
+metadata:
+  name: clothes-service-mongo   # Name of the service
+  labels:                         # Labels that will be applied to the service
+    app: clothes-service
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: clothes-service
+    tier: mongo
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: clothes-service-mongo-deployment           # Name of the deployment
+  labels:                           # Labels applied to this deployment 
+    app: clothes-service
+spec:
+  selector:
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: clothes-service
+      tier: mongo
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: clothes-service
+        tier: mongo
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+        - image: mongo:latest                # The container image
+          name: mongo
+          ports:
+            - containerPort: 27017       # The port that the container exposes
+              name: mongo
+---
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: clothes-service-server-deployment    # Name of the deployment
+  labels:                     # Labels that will be applied to this deployment
+    app: clothes-service-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: clothes-service-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: clothes-service-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+        - name: clothes-service-server
+          image: 990604/clothesservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8053 # The port that the container exposes
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:                    # Environment variables supplied to the Pod
+            - name: MONGODB_HOST
+              value: "clothes-service-mongo"
+---
+apiVersion: v1                      # API version
+kind: Service                       # Type of the kubernetes resource
+metadata:
+  name: clothes-service-server    # Name of the service
+  labels:                           # Labels that will be applied to this service
+    app: clothes-service-server
+spec:
+  type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
+  selector:
+    app: clothes-service-server   # The service exposes Pods with label `app=clothes-service-server`
+  ports:                            # Forward incoming connections on port 8080 to the target port 8053
+    - name: http
+      port: 8053
+      targetPort: 8053
+---
+apiVersion: v1                    # API version
+kind: Service                     # Type of kubernetes resource 
+metadata:
+  name: order-service-mongo   # Name of the service
+  labels:                         # Labels that will be applied to the service
+    app: order-service
+spec:
+  ports:
+    - port: 17017
+  selector:
+    app: order-service
+    tier: mongo
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment                    # Type of the kubernetes resource
+metadata:
+  name: order-service-mongo-deployment           # Name of the deployment
+  labels:                           # Labels applied to this deployment 
+    app: order-service
+spec:
+  selector:
+    matchLabels:                    # This deployment applies to the Pods matching the specified labels
+      app: order-service
+      tier: mongo
+  strategy:
+    type: Recreate
+  template:                         # Template for the Pods in this deployment
+    metadata:
+      labels:                       # Labels to be applied to the Pods in this deployment
+        app: order-service
+        tier: mongo
+    spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      containers:
+        - image: mongo:latest                # The container image
+          name: mongo
+          ports:
+            - containerPort: 17017       # The port that the container exposes
+              name: mongo
+---
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: order-service-server-deployment    # Name of the deployment
+  labels:                     # Labels that will be applied to this deployment
+    app: order-service-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: order-service-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: order-service-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+        - name: order-service-server
+          image: wardbeyens/orderservice:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8052 # The port that the container exposes
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:                    # Environment variables supplied to the Pod
+            - name: MONGODB_HOST
+              value: "order-service-mongo"
+---
+apiVersion: v1                      # API version
+kind: Service                       # Type of the kubernetes resource
+metadata:
+  name: order-service-server    # Name of the service
+  labels:                           # Labels that will be applied to this service
+    app: order-service-server
+spec:
+  type: NodePort                    # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
+  selector:
+    app: order-service-server   # The service exposes Pods with label `app=order-service-server`
+  ports:                            # Forward incoming connections on port 8080 to the target port 8052
+    - name: http
+      port: 8052
+      targetPort: 8052
+---
+apiVersion: apps/v1                          # API version
+kind: Deployment                             # Type of kubernetes resource
+metadata:
+  name: zephyr-service-server-deployment # Name of the deployment
+  labels:                                    # Labels that will be applied to this deployment
+    app: zephyr-service-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: zephyr-service-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: zephyr-service-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+        - name: zephyr-service-server
+          image: wardbeyens/zephyr-edge-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8050 # The port that the container exposes
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "200Mi"
+          env:                    # Environment variables supplied to the Pod
+            - name: USER_SERVICE_HOST
+              value: "user-service-server"
+            - name: USER_SERVICE_PORT
+              value: "8051"
+            - name: ORDER_SERVICE_HOST
+              value: "order-service-server"
+            - name: ORDER_SERVICE_PORT
+              value: "8052"
+            - name: CLOTHES_SERVICE_HOST
+              value: "clothes-service-server"
+            - name: CLOTHES_SERVICE_PORT
+              value: "8053"
+---
+apiVersion: v1                # API version
+kind: Service                 # Type of the kubernetes resource
+metadata:
+  name: zephyr-service-server    # Name of the service
+  labels:                            # Labels that will be applied to this service
+    app: zephyr-service-server
+spec:
+  type: NodePort                     # The service will be exposed by opening a Port on each node and proxying it. Allowing connections from outside the cluster
+  selector:
+    app: zephyr-service-server   # The service exposes Pods with label `app=zephyr-service-server`
+  ports:                             # Forward incoming connections on port 8080 to the target port 8050
+    - name: http
+      port: 8050
+      targetPort: 8050
