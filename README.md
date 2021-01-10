@@ -68,6 +68,7 @@ Here you can see the diagram that describes how our services communicate with ea
 
 ## Swagger UI
 Our swagger UI describes the Get, Post, Put and Delete requests that can be used on the edge service. 
+
 [https://zephyr.wabyte.com/swagger-ui.html](https://zephyr.wabyte.com/swagger-ui.html)
 
 
