@@ -74,6 +74,10 @@ Our swagger UI describes the Get, Post, Put and Delete requests that can be used
 
 ![Swagger UI](https://i.imgur.com/rixDKdr.png)
 
+![Swagger UI](https://i.imgur.com/5Yw7CCC.png)
+
+
+
 
 ## Usage
 
