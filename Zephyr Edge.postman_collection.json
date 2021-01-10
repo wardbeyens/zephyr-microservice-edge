@@ -1,0 +1,825 @@
+{
+	"info": {
+		"_postman_id": "9636e4b0-dfc4-4120-9e4e-8e1b0a01cc6c",
+		"name": "Zephyr Edge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. users",
+			"item": [
+				{
+					"name": "getUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        var jsonData = JSON.parse(responseBody);\r",
+									"        pm.environment.set(\"userUUID_1\", jsonData[0][\"uuid\"]);\r",
+									"        pm.environment.set(\"userUUID_2\", jsonData[1][\"uuid\"]);\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        var jsonData = JSON.parse(responseBody);\r",
+									"        pm.environment.set(\"userUserName_temp\", jsonData[\"userName\"]);\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"wardadminV2\",\r\n    \"firstName\": \"Ward\",\r\n    \"lastName\": \"Beyens\",\r\n    \"email\": \"wardbeyens99@gmail.com\",\r\n    \"password\": \"test1234\",\r\n    \"streetName\": null,\r\n    \"number\": null,\r\n    \"postalCode\": null,\r\n    \"city\": null,\r\n    \"phoneNumber\": null,\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/user",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"wardadminV2\",\r\n    \"firstName\": \"Ward\",\r\n    \"lastName\": \"Beyens\",\r\n    \"email\": \"wardbeyens99@gmail.com\",\r\n    \"password\": \"test1234\",\r\n    \"streetName\": \"Dries\",\r\n    \"number\": \"9\",\r\n    \"postalCode\": \"2380\",\r\n    \"city\": \"Ravels\",\r\n    \"phoneNumber\": \"0496705030\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/user/{{userUserName_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"user",
+								"{{userUserName_temp}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClothesByNameOrByUUID UUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/user/search?uuid={{userUUID_1}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "{{userUserName_temp}}",
+									"disabled": true
+								},
+								{
+									"key": "uuid",
+									"value": "{{userUUID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClothesByNameOrByUUID Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/user/search?userName={{userUserName_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "{{userUserName_temp}}"
+								},
+								{
+									"key": "uuid",
+									"value": "{{userUUID_1}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUserByUserName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        pm.environment.set(\"userUserName_temp\", \"\");\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/user/{{userUserName_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"user",
+								"{{userUserName_temp}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. clothes",
+			"item": [
+				{
+					"name": "getClothes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        var jsonData = JSON.parse(responseBody);\r",
+									"        pm.environment.set(\"clothesUUID_1\", jsonData[0][\"uuid\"]);\r",
+									"        pm.environment.set(\"clothesUUID_2\", jsonData[1][\"uuid\"]);\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/clothes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addClothes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        var jsonData = JSON.parse(responseBody);\r",
+									"        pm.environment.set(\"clothesUUID_temp\", jsonData[\"uuid\"]);\r",
+									"        pm.environment.set(\"clothesName_temp\", jsonData[\"name\"]);\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"brand\": \"Wabyte\",\r\n  \"color\": \"HotPink\",\r\n  \"gender\": \"male\",\r\n  \"name\": \"Blazer - Slim fit\",\r\n  \"price\": 59.99,\r\n  \"size\": \"L\",\r\n  \"type\": \"Blazer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/clothes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateClothes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"brand\": \"Wabyte\",\r\n  \"color\": \"Black\",\r\n  \"gender\": \"male\",\r\n  \"name\": \"Blazer - Slim fit - edit\",\r\n  \"price\": 99.99,\r\n  \"size\": \"XL\",\r\n  \"type\": \"Blazer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/clothes/{{clothesUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes",
+								"{{clothesUUID_temp}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteClothesByUUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        pm.environment.set(\"clothesUUID_temp\", \"\");\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/clothes/{{clothesUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes",
+								"{{clothesUUID_temp}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClothesByNameOrByUUID UUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/clothes/search?uuid={{clothesUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{clothesName_temp}}",
+									"disabled": true
+								},
+								{
+									"key": "uuid",
+									"value": "{{clothesUUID_temp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClothesByNameOrByUUID Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/clothes/search?name=Pijamama",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"clothes",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Pijamama"
+								},
+								{
+									"key": "uuid",
+									"value": "{{clothesUUID}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. extra (only for fresh install)",
+			"item": [
+				{
+					"name": "deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"deleteAllCurrentOrdersAndCreateOrdersWithRealUsersAndClothes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. orders",
+			"item": [
+				{
+					"name": "getOrders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/orders",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        var jsonData = JSON.parse(responseBody);\r",
+									"        pm.environment.set(\"orderUUID_temp\", jsonData[\"uuid\"]);\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"{{userUUID_1}}\",\r\n    \"purchaseList\": [\r\n        {\r\n            \"amount\": 1,\r\n            \"clothes\": \"{{clothesUUID_1}}\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/order",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"{{userUUID_1}}\",\r\n    \"purchaseList\": [\r\n        {\r\n            \"amount\": 2,\r\n            \"clothes\": \"{{clothesUUID_1}}\"\r\n        },\r\n        {\r\n            \"amount\": 1,\r\n            \"clothes\": \"{{clothesUUID_2}}\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/order/{{orderUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"order",
+								"{{orderUUID_temp}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateOrderPaid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"{{userUUID_1}}\",\r\n    \"purchaseList\": [\r\n        {\r\n            \"amount\": 1,\r\n            \"clothes\": \"{{clothesUUID_1}}\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/order/{{orderUUID_temp}}/paid",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"order",
+								"{{orderUUID_temp}}",
+								"paid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrdersByUUIDorBUserUUID UUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/orders/search?uuid={{orderUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders",
+								"search"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{orderUUID_temp}}"
+								},
+								{
+									"key": "userID",
+									"value": "{{userUUID_1}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrdersByUUIDorBUserUUID UUID userID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        return true\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/orders/search?userID={{userUUID_1}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"orders",
+								"search"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{orderUUID_temp}}",
+									"disabled": true
+								},
+								{
+									"key": "userID",
+									"value": "{{userUUID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrderByUUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check Status', () => {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        pm.environment.set(\"orderUUID_temp\", \"\");\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/order/{{orderUUID_temp}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"order",
+								"{{orderUUID_temp}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
