@@ -77,6 +77,9 @@ Our swagger UI describes the Get, Post, Put and Delete requests that can be used
 ![Swagger UI](https://i.imgur.com/5Yw7CCC.png)
 
 
+## PostMan
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.postman.co/run-collection/2c9755dbd1f2d6bd5b1e#?env%5BZephyr%20Environment%20Keys%5D=W3sia2V5IjoiQVBJX1VSTCIsInZhbHVlIjoiaHR0cHM6Ly96ZXBoeXIud2FieXRlLmNvbSIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoiY2xvdGhlc1VVSURfMSIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJjbG90aGVzVVVJRF8yIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6ImNsb3RoZXNVVUlEX3RlbXAiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoiY2xvdGhlc05hbWVfdGVtcCIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJ1c2VyVVVJRF8xIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6InVzZXJVVUlEXzIiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoidXNlclVzZXJOYW1lX3RlbXAiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5Ijoib3JkZXJVVUlEX3RlbXAiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9XQ==)
+
 
 
 ## Usage
